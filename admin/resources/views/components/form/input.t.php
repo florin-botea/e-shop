@@ -8,7 +8,7 @@
 <?php
 return new class
 {
-    protected $props = [
+    protected array $props = [
         'class' => '',
         'type' => 'text',
         'value' => '',
@@ -16,8 +16,8 @@ return new class
         'options' => [],
         'size' => '',
     ];
-    
-    public function data($data) 
+
+    public function data($data): array
     {
         if (empty($data['type'])) {
             $data['type'] = 'text';
@@ -25,7 +25,7 @@ return new class
         if ($data['type'] == 'switch') {
             $data['type'] = 'checkbox';
         }
-        
+
         $class = [
             'select' => 'form-select',
             'color' => 'form-control-color',
@@ -33,15 +33,15 @@ return new class
             'checkbox' => 'form-check-input',
             'range' => 'form-range',
         ][$data['type']] ?? 'form-control';
-        
+
         if (!empty($data['class'])) {
             $class .= ' '. $data['class'];
         }
-        
+
         if (!empty($data['size'])) {
             $class .= 'form-control-'. $data['size'];
         }
-        
+
         $data['class'] = $class;
 
         return $data;

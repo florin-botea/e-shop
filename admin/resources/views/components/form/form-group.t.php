@@ -20,19 +20,19 @@
   </div>
 </div>
 
-<?php 
-return new class 
+<?php
+return new class
 {
     private $inputs = [];
-    
+
     public function data($data): array
     {
         $data['id'] = $data['id'] ?? $data['name'] ?? 'f-' . uniqid();
         $data['isInputGroup'] = $data['prepend'] || $data['append'] || $this->slots('prepend') || $this->slots('append');
-        
+
         return $data;
     }
-    
+
     private function getInput($data) {
         $errors = $this->shared->errors;
         if (strpos($data['name'], '.')) {
@@ -46,7 +46,7 @@ return new class
             $k = $data['name'];
             $end = $data['name'];
             $label = $data['label'] ?? $data['name'];
-            $name = $data['name'];                
+            $name = $data['name'];
         }
         $inp['error'] = $errors->first($k);
         $inp['name'] = $name;
@@ -61,7 +61,7 @@ return new class
         unset($inp['model']);
         return $inp;
     }
-    
+
     private function getMultilangInputs($data) {
         $result = [];
         $errors = $this->shared->errors;
@@ -78,7 +78,7 @@ return new class
                 $k = $lang['value'] . '.' . $data['name'];
                 $end = $data['name'];
                 $label = $data['label'] ?? $data['name'];
-                $name = $lang['value'] . '[' . $data['name'] . ']';                
+                $name = $lang['value'] . '[' . $data['name'] . ']';
             }
             $inp['error'] = $errors->first($k);
             $inp['name'] = $name;
@@ -109,8 +109,8 @@ return new class
         if (!isset($data['label'])) {
             $data['label'] = trans($name);
         }
-                
-        
+
+
         if (!strpos($name, '.')) {
             return array_map(fn($l) => $l['value'] .'.'. $name, $this->registry->shared->languages);
         }

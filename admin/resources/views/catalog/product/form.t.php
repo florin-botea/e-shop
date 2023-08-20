@@ -3,7 +3,7 @@
     <btn-save form="form"></btn-save>
     <btn-cancel></btn-cancel>
   </tpl>
-  <template slot="default">
+  <tpl slot="default">
       <x-panel :title="$title">{% dump($errors) %}
         <x-form :action="$action" :method="$method" id="product-form" p-share="['MODEL' => $model]" multilang>
           <x-tabs :items="$tabs" id="product-form-tabs">
@@ -11,21 +11,21 @@
           </x-tabs>
         </x-form>
       </x-panel>
-  </template>
+  </tpl>
 </tpl>
 
-<?php 
+<?php
 
 use App\Support\Dom;
 
-return new class 
+return new class
 {
-    public function parsing($node) 
+    public function parsing($node)
     {
         $node->addTab('general', 'catalog/product/partials/form/general');
     }
-    
-    public function nodeAddTab($node, $key, $view, $before = null) 
+
+    public function nodeAddTab($node, $key, $view, $before = null)
     {
         static $ref;
         if (! $ref) {

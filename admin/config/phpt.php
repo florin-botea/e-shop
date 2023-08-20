@@ -7,5 +7,7 @@ return [
     'aliases' => [
         'x-csrf' => 'components/form/csrf',
         'x-tabs' => 'components/tabs',
+        'x-input' => 'components/form/input',
+        'x-form-group' => 'components/form/form-group',
     ],
 ];
