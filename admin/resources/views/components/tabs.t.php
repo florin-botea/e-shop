@@ -13,7 +13,9 @@
         </div>
       </tpl>
       <tpl p-else p-foreach="$this->slots() as $k => $slot">
-        <div p-if="$k != 'tabs'" class="tab-pane" :class="[$class, 'show active' => $active == $k]" :id="$k" role="tabpanel" :aria-labelledby="$k.'-tab'">
+        {% $i = 0 %}
+        <div p-if="$k != 'tabs'" class="tab-pane" :class="[$class, 'show active' => $i == 0]" :id="$k" role="tabpanel" :aria-labelledby="$k.'-tab'">
+          {% $i++; %}
           {% $this->renderSlots($k, []) %}
         </div>
       </tpl>
