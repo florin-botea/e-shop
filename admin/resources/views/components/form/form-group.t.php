@@ -1,85 +1,35 @@
-<div class="form-group mb-3" :class="$class">
+<div class="form-group mb-3" :class="[$class, 'row' => $inline]">
   <slot name="label">
-    <label :for="$id" :class="$labelClass">{{ $label }}</label>
+    <label :for="$id" class="form-label" :class="['col-sm-2 col-form-label' => $inline, $size ? 'col-form-label-'.$size : '']">{{ $label }}</label>
   </slot>
-  <div :class="['col-sm-10'=>$inline]">
+  <div :class="['col-sm-10' => $inline]">
       <div :class="['input-group' => $isInputGroup, $size && $isInputGroup ? 'input-group-'. $size : '']">
         <slot name="prepend">
           <span class="input-group-text" p-if="$prepend">{{ $prepend }}</span>
         </slot>
-        <slot p-bind="['attrs' => $attrs]">
-          <tpl is="bootstrap:forms/form-control" p-bind="$attrs"></tpl>
+        <slot p-bind="['attrs' => $this->attrs()]">
+          <tpl is="components/form/input" p-bind="$this->attrs()"></tpl>
         </slot>
         <slot name="append">
           <span class="input-group-text" p-if="$append">{{ $append }}</span>
         </slot>
       </div>
-      <span p-if="!$isCheckbox" class="error-bag">
+      <span class="error-bag">
         <div p-if="$error" class="text-danger">{{ $error }}</div>
       </span>
   </div>
-  <slot name="label" p-if="$isCheckbox">
-    <label :for="$id" class="form-check-label">{{ $label }}</label>
-  </slot>
-  <span p-if="$isCheckbox" class="error-bag">
-    <div p-if="$error" class="text-danger">{{ $error }}</div>
-  </span>
 </div>
 
-
-<tpl is="bootstrap:forms/form-group" p-foreach="$this->inputs as $lang => $inp" :class="[$class, $lang ? 'lang lang-'.$lang : '']" p-bind="$inp">
-    <slot :input="$inp" :lang="$lang">
-        <tpl p-if="$type == 'list'">
-            <div v-scope="AjaxList([], '{{ $resource }}')">
-                <input type="text" class="form-control" p-bind="$slot->attrs" :list="'list-'.$slot->attrs['id']" @input="fetch" />
-                <datalist :id="'list-'.$slot->attrs['id']">
-                    <option v-for="item in items" p-bind:value="item.name" />
-                </datalist>
-                <div class="well well-sm" style="height: 150px; overflow: auto;">
-                    <div v-for="item in items">
-                        <i class="fa fa-minus-circle"></i> ${ item.label }
-                        <input type="hidden" name="{{ $name }}[]" p-bind:value="item.value" />
-                    </div>
-                </div>
-            </div>
-        </tpl>
-        <x-form-control p-else p-bind="$slot->attrs" :value="$inp['value']" />
-    </slot>
-</tpl>
-
 <?php 
-
 return new class 
 {
     private $inputs = [];
     
     public function data($data): array
     {
-        $class = $data['class'] ?? '';
-        $labelClass = 'form-label';
-        $isCheckbox = in_array($data['type'] ?? '', ['checkbox','radio']);
+        $data['id'] = $data['id'] ?? $data['name'] ?? 'f-' . uniqid();
+        $data['isInputGroup'] = $data['prepend'] || $data['append'] || $this->slots('prepend') || $this->slots('append');
         
-        if (isset($data['inline'])) {
-            $class .= ' row';
-            $labelClass .= ' col-sm-2 col-form-label';
-            if (!empty($data['size'])) {
-                $labelClass .= ' col-form-label-'. $data['size'];
-            }
-        }
-        
-        $id = $data['id'] ?? 'f-' . uniqid();
-
-        if (empty($data['name'])) {
-            $this->inputs = $data;
-            return $data;
-        }
-
-        if (!empty($data['multilang'])) {
-            $this->inputs = $this->getMultilangInputs($data);
-        } else {
-            $this->inputs[] = $this->getInput($data);
-        }
-
         return $data;
     }
     
