@@ -1,0 +1,6 @@
+form.multilang .lang {
+    display: none;
+}
+form.multilang .lang-1 {
+    display: block;
+}

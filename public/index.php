@@ -11,7 +11,12 @@
 |
 */
 
-$app = require __DIR__.'/../bootstrap/app.php';
+$parts = preg_split('~[/\?]~', trim($_SERVER['REQUEST_URI'] ?? '', '/'));
+if ($parts[0] == 'admin') {
+    $app = require __DIR__.'/../admin/index.php';
+} else {
+    $app = require __DIR__.'/../admin/index.php';
+}
 
 /*
 |--------------------------------------------------------------------------
