@@ -20,18 +20,19 @@ class ProductController extends Controller
     
     public function create() 
     {
-        $product = new Product();
-        $product->description = [];
-        $product->description[1] = [
-            'name' => 'set jucarii'
-        ];
+// $x = require(base_path('../database/migrations/2023_02_17_175413_create_products_table.php'));
+// $x->down();
+// $x->up();
         
-        $view['model'] = $product;
+        $record = Product::firstOrCreate(); // type draft for this user
         
-        $view['action'] = '/admin/catalog/product'; // todo
-        $view['method'] = 'POST';
+        $MODEL = $record;
+        $action = '/admin/catalog/product'; // todo
+        $method = 'POST';
+        $crud_product_description = route('crud.product.description', ['product_id' => $record->id]);
         
-        return view('catalog/product/form', $view);
+        $data = compact('action', 'method', 'crud_product_description');
+        return view('catalog/product/form', $data);
     }
     
     public function store(Request $request) 
@@ -42,8 +43,6 @@ class ProductController extends Controller
         ]);
         
         $item = Product::create($request->all());
-        
-        
     }
     
     public function edit($id) 

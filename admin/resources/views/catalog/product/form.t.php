@@ -11,6 +11,11 @@
           </x-tabs>
         </x-form>
       </x-panel>
+      
+      <div id="crud"></div>
+      <script>
+          $('#crud').crud("{{ $crud_product_description }}");
+      </script>
   </tpl>
 </tpl>
 

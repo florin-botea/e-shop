@@ -46,8 +46,7 @@ $app = new LumenCart\Application(__DIR__);
 $app->useStoragePath(dirname(__DIR__) . '/storage');
 
 $app->withFacades();
-
-// $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +81,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('filesystems');
 
 /*
 |--------------------------------------------------------------------------
@@ -113,10 +113,10 @@ $app->configure('app');
 |
 */
 
+$app->register(App\Providers\AppServiceProvider::class);
 $app->register(PsrRouting\RoutingServiceProvider::class);
 $app->register(PhpTemplates\Illuminate\PhpTemplatesServiceProvider::class);
 $app->register(App\Providers\ViewServiceProvider::class);
-// $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 

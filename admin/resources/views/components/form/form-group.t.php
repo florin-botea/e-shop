@@ -7,7 +7,8 @@
             <span class="input-group-text" p-if="$prepend">{{ $prepend }}</span>
         </slot>
         <slot p-bind="['attrs' => $this->attrs()]">
-            <tpl is="components/form/input" p-bind="$this->attrs()"></tpl>
+            <tpl p-if="$multilang" p-foreach="$LANGUAGES as $lang" is="components/form/input" p-bind="$this->attrs()" :class="'input-lang lang-'. $lang->id"></tpl>
+            <tpl p-else is="components/form/input" p-bind="$this->attrs()"></tpl>
         </slot>
         <slot name="append">
             <span class="input-group-text" p-if="$append">{{ $append }}</span>

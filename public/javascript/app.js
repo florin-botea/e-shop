@@ -1,41 +1,67 @@
-$(document).on('change', '.js_formLangControl', function() {
-    let self = $(this);
-    let form = self.closest('form');
-    form.find('.lang').each((i, el) => {
-        el = $(el);
-        if (el.hasClass('lang-' + self.val())) {
-            return el.fadeIn();
-        }
-        el.hide();
-    });
-});
-
-$(document).ready(function() {
-    
-const List = (items) => ({
-    items: items,
-    add(item) {
-        this.items.push(item);
+class Crud 
+{
+    constructor(el, url) {
+        this.el = el;
+        this.url = url.replace('/[\/\?& ]+$/', '');
     }
-});
-
-const AjaxList = (items, resource) => ({
-    items: items,
-    add(item) {
-        this.items.push(item);
-    },
-    fetch(val) {
-        $.get('/admin/autocomplete?resource='+resource+'&q='+val)
+    
+    init() {
+        http.get(this.url)
         .then(res => {
-            res.forEach(item => this.items.push(item));
+            this.el.html(res.data);
+            this.attachEventListeners();
+        })
+        .finally(() => {
+            // $(this).loading(false);
+        })
+    }
+    
+    attachEventListeners()
+    {
+        this.el.find('[_role="lm-crud-submit"]').on('click', () => {
+            this.el.find('[_role="lm-crud-modal"] form').submit();
+        })
+        
+        this.el.find('[_role="lm-crud-create"]').on('click', () => {
+            // $(this).loading();
+            http.get(this.url + '/create')
+            .then(res => {
+                this.el.find('[_role="lm-crud-modal"] .modal-body')
+                .html(res.data);
+                this.el.find('[_role="lm-crud-modal"]').modal('show');
+            })
+            .finally(() => {
+                // $(this).loading(false);
+            })
         });
     }
-});
+    
+    index() {
+        this.el.load(this.url);
+    }
+}
 
-PetiteVue.createApp({
-    $delimiters: ['${', '}'],
-    List,
-    AjaxList
-}).mount('#content');
+(function ( $ ) {
+    if ($.fn.crud) {
+        return;
+    }
+    
+    $.fn.crud = function(url) {
+        let crud = new Crud(this, url);
+        crud.init();
+        return this;
+    };
+}( jQuery ));
 
+$(document).on('__submit', '.modal-body form', function(event) {alert(2)
+    event.preventDefault();
+    let formData = new FormData(this);
+    let action = $(this).attr('action');
+    let method = $(this).attr('method').toLowerCase();
+    
+    http[method](action, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
 });

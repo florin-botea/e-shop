@@ -11,8 +11,12 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function boot()
     {
-        // $this->loadViewsFrom($sourcePath, $this->moduleNameLower);
+        // list all files from root model
+        // list all files from admin model
+        $this->app->bind(PhpTemplates::class, function($app) {
+            return $app['phpt'];
+        });
     }
 }

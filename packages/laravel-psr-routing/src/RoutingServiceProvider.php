@@ -104,12 +104,13 @@ class RoutingServiceProvider extends ServiceProvider
     private function getUri($request) 
     {
         $path = trim($request->getPathInfo(), '/') ?: '/';
-        $i = 0;
-        return implode('/', array_map(function($p) use (&$i) { 
-            if (is_numeric($p)) {
-                $this->parameters['p'.$i] = $p;
-                return '{p'.($i++).'}';
+        $lastChunk = null;
+        return implode('/', array_map(function($p) use (&$lastChunk) { 
+            if (is_numeric($p) && $lastChunk) {
+                $this->parameters[$lastChunk . '_id'] = $p;
+                return '{' . $lastChunk . '_id}';
             }
+            $lastChunk = str_replace('-', '_', $p);
             return $p;
         }, explode('/', $path)));
     }

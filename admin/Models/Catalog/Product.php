@@ -3,11 +3,9 @@
 namespace App\Models\Catalog;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use LumenCart\Models\Catalog\Product as Model;
 
 class Product extends Model
 {
-    use HasFactory;
-    
-    public $description = [];
+
 }

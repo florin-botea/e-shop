@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use PhpTemplates\PhpTemplates;
+use LumenCart\Models\Localisation\Language;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,11 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(PhpTemplates $templates)
     {
+        $templates->share('LANGUAGES', function() {
+            $language = $this->app->make(Language::class);
+            return Language::all();
+        });
+        
         $config = $templates->getConfig();
 
         $config->helper('t', function($t, $params) {

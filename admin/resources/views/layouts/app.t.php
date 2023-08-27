@@ -17,9 +17,15 @@
 <link href="/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
 <link type="text/css" href="/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
 <link type="text/css" href="/stylesheet/app.css" rel="stylesheet" media="screen" />
-<script src="https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.iife.js"></script>
-<script src="view/javascript/common.js" type="text/javascript"></script>
+<!-- script src="view/javascript/common.js" type="text/javascript"></script -->
 <script src="/javascript/app.js" type="text/javascript"></script>
+<script src="https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+<script>
+window.http = axios;
+window.http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+</script>
+
 </head>
 <body>
 <div id="container">
