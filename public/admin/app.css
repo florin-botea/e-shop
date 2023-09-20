@@ -1,0 +1,47 @@
+@keyframes shimmer {
+  0% {
+    background-position: 0px 0;
+  }
+  100% {
+    background-position: 100em 0;
+  }
+}
+
+.bg-fetch {
+  animation-duration: 5s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: shimmer;
+  animation-timing-function: linear;
+  background: fff;
+  background: linear-gradient(to right, #eeeeee 15%, #dddddd 55%, #eeeeee 80%);
+  -webkit-backface-visibility: hidden;
+}
+
+.btn > [role="status"] {
+    display: none;
+}
+.btn.loading {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+.btn.loading * {
+    display: none;;
+}    
+.btn.loading > [role="status"] {
+    display: block;
+}
+
+.lm-table-loading {
+    display: none;
+}
+.lm-table-loading.loading {
+    display: table;
+    width: 100%;
+}
+
+.lm-table-loading.loading + .table-wrapper {
+    display: none;
+}

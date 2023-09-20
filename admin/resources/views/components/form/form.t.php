@@ -1,5 +1,4 @@
-<form :action="$action" :method="in_array(strtolower($method), ['post', 'put']) ? 'POST' : 'GET'" encrypt="multipart/form-data" p-bind="$this->attrs()" :class="$class">
-  <input name="_method" :value="$method" hidden>
+<form :action="$action" :method="$method" encrypt="multipart/form-data" p-bind="$this->attrs()" :class="$class">
   <slot></slot>
 </form>
 

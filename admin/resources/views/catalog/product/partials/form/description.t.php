@@ -1,0 +1,1 @@
+<div x-data="product//description"></div>

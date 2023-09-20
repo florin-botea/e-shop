@@ -18,7 +18,7 @@ class Dom
             return;
         }
         
-        $active = !$ref->getChildNodes()->count();
+        $active = !$ref->querySelectorAll('li')->count();
         $push = DomNode::new('li', ['class' => 'nav-item'])
         ->appendChild(DomNode::new('button', [
             'class' => 'nav-link' . ($active ? ' active' : ''),
@@ -40,7 +40,7 @@ class Dom
             $push->insertBefore($before);
         }
         
-        DomNode::new('tpl', ['is' => $view, 'slot' => $key])
+        DomNode::new('tpl', ['include' => $view, 'slot' => $key])
         ->appendTo($ref);
     }
 }

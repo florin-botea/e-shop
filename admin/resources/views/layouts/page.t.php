@@ -1,3 +1,7 @@
+<tpl p-if="request()->ajax()">
+    {% return $this->renderSlots('default', []) %}
+</tpl>
+
 <tpl extends="layouts/app">
   <div id="content">
     <div class="page-header" onclick="this.add">

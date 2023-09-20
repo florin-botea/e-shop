@@ -1,0 +1,3 @@
+config auth from lumen vendor
+
+override Laravel\Lumen\Http\Redirector to add session

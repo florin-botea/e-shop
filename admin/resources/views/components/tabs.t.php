@@ -7,15 +7,15 @@
       </slot>
     </ul>
     <div class="tab-content">
+      {% $i = 0 %}
       <tpl p-if="$items">
         <div p-foreach="$items as $k => $tmp" class="tab-pane" :class="[$class, 'show active' => $active == $k]" :id="$k" role="tabpanel" :aria-labelledby="$k.'-tab'">
           {% $this->renderSlots($k, []) %}
         </div>
       </tpl>
       <tpl p-else p-foreach="$this->slots() as $k => $slot">
-        {% $i = 0 %}
         <div p-if="$k != 'tabs'" class="tab-pane" :class="[$class, 'show active' => $i == 0]" :id="$k" role="tabpanel" :aria-labelledby="$k.'-tab'">
-          {% $i++; %}
+          {% $i++ %}
           {% $this->renderSlots($k, []) %}
         </div>
       </tpl>

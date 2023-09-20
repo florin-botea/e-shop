@@ -94,6 +94,11 @@ $app->configure('filesystems');
 |
 */
 
+$app->middleware([
+    \Illuminate\Session\Middleware\StartSession::class,
+    \Illuminate\View\Middleware\ShareErrorsFromSession::class
+]);
+
 // $app->middleware([
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
@@ -113,6 +118,7 @@ $app->configure('filesystems');
 |
 */
 
+$app->register(Illuminate\Cookie\CookieServiceProvider::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(PsrRouting\RoutingServiceProvider::class);
 $app->register(PhpTemplates\Illuminate\PhpTemplatesServiceProvider::class);

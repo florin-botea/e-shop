@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
+use Illuminate\Support\Facades\Session;
 
 class Handler extends ExceptionHandler
 {
@@ -48,7 +49,28 @@ class Handler extends ExceptionHandler
      * @throws \Throwable
      */
     public function render($request, Throwable $exception)
-    {//throw ($exception);
+    {
+        //dd(get_class_methods($exception->validator), $exception->validator->errors()->first());
+        //throw ($exception);
+        if ($exception instanceof \Illuminate\Validation\ValidationException) {
+            // todo if not ajax
+            // todo de permanents with session
+
+            return redirect()
+            ->to($_SERVER['HTTP_REFERER'])
+            ->withErrors($exception->validator->errors());
+        }
+        
+        if ($exception instanceof \LumenCart\Exceptions\ConfirmationRequired) {
+            $data = $request->all();
+            $data['_confirmation_required'] = [
+                'message' => $exception->getMessage(),
+                'flag' => '_confirm'
+            ];
+            
+            return response($data);
+        }
+    
         return parent::render($request, $exception);
     }
 }

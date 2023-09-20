@@ -8,9 +8,11 @@ use App\Models\Catalog\Product;
 
 class ProductController extends Controller
 {
-    public function index() 
+    public function index(Product $product) 
     {
-        return view('layouts/app');
+        $data['collection'] = $product->with('description')->paginate();
+
+        return view('catalog/product/index', $data);
     }
     
     public function show($id) 
@@ -26,33 +28,41 @@ class ProductController extends Controller
         
         $record = Product::firstOrCreate(); // type draft for this user
         
-        $MODEL = $record;
+        $_model = $record;
         $action = '/admin/catalog/product'; // todo
         $method = 'POST';
         $crud_product_description = route('crud.product.description', ['product_id' => $record->id]);
         
-        $data = compact('action', 'method', 'crud_product_description');
+        $data = compact('action', 'method', 'crud_product_description', '_model');
         return view('catalog/product/form', $data);
     }
     
     public function store(Request $request) 
     {
         $request->validate([
-            'description.*.name' => 'required|min:3',
-            'description.*.meta_title' => 'required|min:3',
+            'model' => 'required|min:3',
         ]);
         
         $item = Product::create($request->all());
     }
     
-    public function edit($id) 
+    public function edit($product_id) 
     {
-        abort(404);
+        $record = Product::findOrFail($product_id); // type draft for this user
+        
+        $_model = $record;
+        $action = route('catalog/product/update', ['product_id' => $product_id]); // todo
+        $crud_product_description = route('crud.product.description', ['product_id' => $record->id]);
+        
+        $data = compact('action', 'crud_product_description', '_model');
+        return view('catalog/product/form', $data);
     }
     
-    public function update($id) 
+    public function update($product_id, Product $product, Request $request) 
     {
-        abort(404);
+        $product->find($product_id)->update($request->all());
+        
+        return redirect(route('catalog/product'));
     }
     
     public function destroy($id) 

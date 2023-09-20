@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html :dir="$direction" :lang="$lang">
 <head>
+<script>
+window.app = {!! json_encode($WINDOW_VARS) !!}
+</script>
 <meta charset="UTF-8" />
 <title>{{ $title }}</title>
 <base :href="$base" />
@@ -21,13 +24,20 @@
 <script src="/javascript/app.js" type="text/javascript"></script>
 <script src="https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.iife.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+<link href="/admin/app.css" type="text/css" rel="stylesheet" media="screen" />
+<link href="/admin/crud.css" type="text/css" rel="stylesheet" media="screen" />
+<script src="/admin/crud.js" type="text/javascript"></script>
+<script src="/admin/index.js" type="text/javascript"></script>
+<script src="/admin/alpine.js" type="text/javascript"></script>
+<script src="/admin/app.js" type="text/javascript"></script>
+<script src="//unpkg.com/alpinejs" defer></script>
 <script>
 window.http = axios;
 window.http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 </script>
-
 </head>
 <body>
+    
 <div id="container">
     <tpl is="partials/header"></tpl>
     <tpl is="partials/column-left"></tpl>

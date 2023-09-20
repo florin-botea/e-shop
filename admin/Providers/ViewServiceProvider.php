@@ -21,6 +21,11 @@ class ViewServiceProvider extends ServiceProvider
             return Language::all();
         });
         
+        $templates->share('WINDOW_VARS', [
+            'base_url' => url('/admin'),
+            'items_per_page' => 20,
+        ]);
+        
         $config = $templates->getConfig();
 
         $config->helper('t', function($t, $params) {
@@ -49,7 +54,11 @@ class ViewServiceProvider extends ServiceProvider
             }
 
             if (!$node->hasAttribute('value') && !$node->hasAttribute(':value')) {
-                $node->setAttribute(':value', 123); // TODO
+                $node->setAttribute(':value', "data_get(\$_model, '$params')");
+            }
+            
+            if (!$node->hasAttribute('error') && !$node->hasAttribute(':error')) {
+                $node->setAttribute(':error', "\$errors->first('$params')");
             }
         });
     }

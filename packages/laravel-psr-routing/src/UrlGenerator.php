@@ -26,17 +26,24 @@ class UrlGenerator extends BaseUrlGenerator
     public function route($name, $parameters = [], $secure = null)
     {
         $name = str_replace('.', '/', $name);
-        $keys = array_keys($parameters);
-        $keys = array_map(function($key) {
-            return preg_replace('/(_id)$/', '', $key);
-        }, $keys);
-        $keysRegexp = preg_replace('/[\-_]/', '[\-_]', implode('|', $keys));
-        $uri = preg_replace_callback("/($keysRegexp)([\/])/", function($m) use (&$parameters) {
-            $return = $m[1] . '/' . $parameters[$m[1] . '_id'] . '/';
-            unset($parameters[$m[1] . '_id']);
-            return $return;
-        }, $name);
-  
+        $parts = explode('/', $name);
+        $uri = [];
+        
+        if (end($parts) == 'update') {
+            array_pop($parts);
+            $parameters['_method'] = 'PUT';
+        }
+        
+        foreach ($parts as $part) {
+            $paramKey = str_replace('-', '_', $part) . '_id';
+            $uri[] = $part;
+            if (isset($parameters[$paramKey])) {
+                $uri[] = $parameters[$paramKey];
+                unset($parameters[$paramKey]);
+            }
+        }
+
+        $uri = implode('/', $uri);
         $uri = $this->to($uri, [], $secure);
 
         if (! empty($parameters)) {

@@ -1,4 +1,4 @@
-<x-form :action="$action" :method="$method">
+<x-form :action="$action">
     <!-- x-form-group type="select" p-model="language_id" :options="["></x-form-group -->
     <input type="text" name="language_id" value="1">
     <x-form-group p-model="name"></x-form-group>
