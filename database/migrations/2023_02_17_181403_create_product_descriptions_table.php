@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('product_description', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id')->unsigned();
+            $table->integer('store_id')->unsigned();
             $table->integer('language_id')->unsigned();
             $table->string('name', 175);
             $table->text('description');

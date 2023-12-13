@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('path');
             $table->integer('parent_id')->unsigned();
-            $table->string('image', 211);
+            $table->string('image');
             $table->integer('sort_order');
-            $table->tinyInteger('status', 1);
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

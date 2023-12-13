@@ -19,8 +19,8 @@ return new class extends Migration
             $table->decimal('price', 20, 4);
             $table->integer('quantity')->comment('when quantity is depleted, special price is removed. -1 means unlimited');
             $table->integer('customer_group_id')->unsigned();
-            $table->timestamp('starts_at');
-            $table->timestamp('ends_at');
+            $table->timestamp('starts_at')->nullable();
+            $table->timestamp('ends_at')->nullable();
             $table->timestamps();
         });
     }

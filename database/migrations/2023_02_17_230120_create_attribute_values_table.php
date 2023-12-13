@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('attribute_id');
             $table->string('value', 255);
+            $table->string('unit', 255);
             $table->timestamps();
         });
     }

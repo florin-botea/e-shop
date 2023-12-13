@@ -1,9 +1,9 @@
 class Crud 
 {
-    constructor(el, route) {
+    constructor(el, url) {
         this.el = el;
         this.el.data('crud', this);
-        this.url = window.app.base_url + '/' + route.replace('/[\/\?& ]+$/', '');
+        this.url = url;
         this.per_page = window.app.items_per_page;
     }
     
@@ -32,6 +32,7 @@ class Crud
             this.attachEventListeners();
             this.loading(this.shimmer, false);
         })
+        .catch(error => alert(JSON.stringify(error.response.data, null, 2)))
         .finally(() => {
         })
     }    
@@ -39,13 +40,17 @@ class Crud
     create() {
         let btn = this.el.find('.lm-crud-create');
         this.loading(btn, true);
-        http.get(this.url + '/create')
+        let temp = this.url.split('?');
+        let url = temp[0] + '/create' + (temp[1] ? '?' + temp[1] : '');
+        http.get(url)
         .then(res => {
             this.modal.find('.modal-body')
             .html(res.data);
             this.modal.modal('show');
             this.loading(btn, false);
         })
+                .catch(error => alert(JSON.stringify(error.response.data, null, 2)))
+
         .finally(() => {
             // $(this).loading(false);
             this.loading(btn, false);
@@ -55,13 +60,17 @@ class Crud
     edit(id) {
         let btn = this.el.find('tr[data-item-id="'+id+'"] .lm-crud-edit');
         this.loading(btn, true);
-        http.get(this.url + '/' + id +'/edit')
+        let temp = this.url.split('?');
+        let url = temp[0] + '/' + id +'/edit' + (temp[1] ? '?' + temp[1] : '');
+        http.get(url)
         .then(res => {
             this.modal.find('.modal-body')
             .html(res.data);
             this.modal.modal('show');
             this.loading(btn, false);
         })
+                .catch(error => alert(JSON.stringify(error.response.data, null, 2)))
+
         .finally(() => {
             this.loading(btn, false);
             // $(this).loading(false);
@@ -71,7 +80,9 @@ class Crud
     delete(id) {
         let btn = this.el.find('tr[data-item-id="'+id+'"] .lm-crud-delete');
         this.loading(btn, true);
-        http.delete(this.url + '/' + id)
+        let temp = this.url.split('?');
+        let url = temp[0] + '/' + id + (temp[1] ? '?' + temp[1] : '');
+        http.delete(url)
         .then(res => {
             this.fetch();
         })
@@ -88,6 +99,7 @@ class Crud
         let formData = new FormData(form[0]);
         let action = form.attr('action');
         let method = form.attr('method').toLowerCase();
+        form.find('.form-group .text-error').remove();
         
         http[method](action, formData, {
             headers: {
@@ -97,6 +109,17 @@ class Crud
         .then(res => {
             this.fetch();
             this.modal.modal('hide');
+        })
+        .catch(error => {
+            if ((error.response.status || 0) == 423) {
+                Object.keys(error.response.data).forEach(name => {
+                    let msg = error.response.data[name][0];
+                    form.find(`[name="${name}"]`).after(`<div class="text-error text-danger">${msg}</div>`);
+                });
+            } else {
+alert(JSON.stringify(error.response.data, null, 2))
+
+            }
         })
         .finally(() => {
             this.loading(btn, false);

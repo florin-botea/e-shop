@@ -11,27 +11,14 @@
 |
 */
 
-function get_dir_contents($dir, &$results = array()) {
-    $files = scandir($dir);
-
-    foreach ($files as $key => $value) {
-        $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
-        if (!is_dir($path)) {
-            $results[] = $path;
-        } else if ($value != "." && $value != "..") {
-            get_dir_contents($path, $results);
-            $results[] = $path;
-        }
-    }
-
-    return $results;
-}
+// todo remove and put as package
+require_once('./../packages/lumencart/framework/src/helpers.php');
 
 $parts = preg_split('~[/\?]~', trim($_SERVER['REQUEST_URI'] ?? '', '/'));
 if ($parts[0] == 'admin') {
-    $app = require __DIR__.'/../admin/index.php';
+    $app = require __DIR__.'/../bootstrap/admin.php';
 } else {
-    $app = require __DIR__.'/../admin/index.php';
+    $app = require __DIR__.'/../bootstrap/catalog.php';
 }
 
 /*

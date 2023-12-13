@@ -1,0 +1,1 @@
+#1 Set a form id with relevant identifiers + unique hash to be used as crud component actions on the background session and save them later with the entire form. We do this because on create form we do not have a related id and a draft approch would be a mess. See Any DescriptionController for more light

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('price', 20, 4);
             $table->integer('stock_status_id')->unsigned();
             $table->integer('warehouse_id')->unsigned();
-            $table->date('available_at')->default(\DB::raw('now()'));
+            $table->timestamp('available_at')->default(\DB::raw('NOW()'));
             $table->tinyInteger('subtract');
             $table->integer('sort_order');
             $table->timestamps();
