@@ -40,6 +40,12 @@ if (! function_exists('model')) {
     }
 }
 
+if (! function_exists('form')) {
+    function form($code, $data = []) {
+        return new App\View\Form($code, $data);
+    }
+}
+
 if (! function_exists('old')) {
     function old($key, $fallback) {
         return session()->getOldInput($key, $fallback);
@@ -81,3 +87,19 @@ if (! function_exists('get_dir_classes')) {
         return $classes;
     }
 }
+
+if (! function_exists('model_name')) {
+    function model_name($class) {
+        if (!is_string($class)) {
+            $class = get_class($class);
+        }
+        
+        $name = str_replace('App\\Models\\', '', $class);
+        $parts = explode('\\', $name);
+        $parts = array_map(fn($part) => Illuminate\Support\Str::snake($part), $parts);
+        $name = implode('/', $parts);
+        
+        return $name;
+    }
+}
+    

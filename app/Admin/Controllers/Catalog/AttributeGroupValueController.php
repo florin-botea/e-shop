@@ -22,9 +22,7 @@ class AttributeGroupValueController extends Controller
     public function index($attribute_group_id) 
     {
         $data['collection'] = $this->model_catalog_attribute_group_value
-        ->with(['attribute' => function($q) {
-            $q->withDescription();
-        }])
+        ->with('attribute.language')
         ->where('attribute_group_id', $attribute_group_id)
         ->paginate();
 
@@ -46,19 +44,16 @@ class AttributeGroupValueController extends Controller
         $this->model_catalog_attribute_group_value->validator($this->request->all())
         ->validate();
         
-        $data = $this->request->all();
-        $data = array_merge([
-            'attribute_group_id' => $attribute_group_id,
-        ], $data);
-
-        $record = $this->model_catalog_attribute_group_value->create($data);
+        $create = $this->request->all();
+        $create['attribute_group_id'] = $attribute_group_id;
+        $record = $this->model_catalog_attribute_group_value->createWithRelationships($create);
         
         return ['success' => true];
     }
     
-    public function edit($attribute_group_id) 
+    public function edit($attribute_group_id, $value_id) 
     {
-        return $this->form($attribute_group_id);
+        return $this->form($attribute_group_id, $value_id);
     }
     
     public function update($attribute_group_id) 
@@ -66,18 +61,11 @@ class AttributeGroupValueController extends Controller
         $this->model_catalog_attribute_group_value->validator($this->request->all(), $attribute_group_id)
         ->validate();
 
+        $update = $this->request->all();
         $record = $this->model_catalog_attribute_group_value->findOrFail($attribute_group_id);
-        $relationships = FormSession::pull($this->request->_form_id);
-        foreach ($relationships as $relationship => $collection) {
-            $record->{$relationship}()->whereNotIn('id', $collection->pluck('id')->toArray())
-            ->delete();
-            foreach ($collection as $item) {
-                $item->attribute_group_id = $record->id;
-                $item->save();
-            }
-        }
+        $record->updateWithRelationships($update);
         
-        return redirect(route('admin/catalog/attribute_group_value'));
+        return ['success' => true];
     }
     
     public function destroy($id) 
@@ -92,7 +80,7 @@ class AttributeGroupValueController extends Controller
             $record = $this->model_catalog_attribute_group_value->findOrFail($attribute_group_value_id);
         }
         
-        $attributes = $this->model_catalog_attribute->withDescription()->get();
+        $attributes = $this->model_catalog_attribute->with('language')->get();
         $siblings = $this->model_catalog_attribute_group_value->where('attribute_group_id', $attribute_group_id)
         ->where('attribute_id', '!=', $attribute_group_value_id)
         ->pluck('attribute_id')
@@ -101,7 +89,7 @@ class AttributeGroupValueController extends Controller
         $attribute_options = [];
         foreach ($attributes as $attribute) {
             $attribute_options[] = [
-                'label' => $attribute->name,
+                'label' => $attribute->language->name,
                 'value' => $attribute->id,
                 'disabled' => in_array($attribute->id, $siblings)
             ];

@@ -4,7 +4,7 @@ namespace App\View\Fields;
 
 use App\View\FieldInterface;
 
-class Text implements FieldInterface
+class MultilangText implements FieldInterface
 {
     public function configForm($data) 
     {return ''; // todo:
@@ -15,13 +15,6 @@ class Text implements FieldInterface
     {
         $data['type'] = 'text';
 
-        return view('components/form/input', $data);
-    }
-    
-    public function field($data) 
-    {
-        $data['type'] = 'text';
-
-        return view('components/form/form-group', $data);
+        return view('components/form/input-multilang', $data);
     }
 }

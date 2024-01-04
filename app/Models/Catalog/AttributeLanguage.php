@@ -4,21 +4,19 @@ namespace App\Models\Catalog;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use LumenCart\Model;
-use LumenCart\Traits\HasLanguages;
 
-class AttributeValue extends Model
+class AttributeLanguage extends Model
 {
-    use HasFactory, HasLanguages;
+    use HasFactory;
     
     protected $fillable = [
         'attribute_id',
-        'value',
-        'unit',
-        'value_lang',
-        'unit_lang'
+        'language_id',
+        'name',
     ];
- 
+    
     protected $validationRules = [
-        'value' => 'required',
+        'language_id' => 'required',
+        'name' => 'required|min:3',
     ];
 }

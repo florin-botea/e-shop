@@ -35,15 +35,16 @@ class Model extends BaseModel
     
     public function updateWithRelationships($data)
     {
-        $model = $this->update($data);
+        $this->update($data);
+        $model = $this;
         
         $this->dataRelation($model, $data, function($rel, $data) {
             # keys must be relation ids, even if is one to one
             // delete missing
-            $rel->whereNotIn('id', array_keys($data, 'id'))->delete();
+            (clone $rel)->whereNotIn('id', array_keys($data))->delete();
             // update or create
             foreach ($data as $id => $val) {
-                $record = $rel->find($id);
+                $record = (clone $rel)->find($id);
                 if ($record) {
                     $record->updateWithRelationships($val);
                 } else {
@@ -87,4 +88,13 @@ class Model extends BaseModel
             }
         }        
     }
+    
+//     public static function boot(): void
+//     {
+//         parent::boot();
+//         
+//         static::creating(function($model) {
+//             
+//         });
+//     }
 }

@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use LumenCart\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Arr;
+use LumenCart\Traits\HasLanguages;
 
 class Attribute extends Model
 {
-    use HasFactory;
+    use HasFactory, HasLanguages;
     
     protected $fillable = [
         'code',
@@ -21,14 +22,6 @@ class Attribute extends Model
     protected $casts = [
         'config' => 'array',
     ];
-    
-    public function descriptions() {
-        return $this->hasMany(model('catalog/attribute_description')->class);
-    }
-    
-    public function description() {
-        return $this->hasOne(model('catalog/attribute_description')->class);
-    }
 
     public function validator($data = [], $id = 0)
     {

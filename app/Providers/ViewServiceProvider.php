@@ -62,7 +62,16 @@ class ViewServiceProvider extends ServiceProvider
                 $node->setAttribute(':checked', "old('$params', data_get(\$_model, '$params'))");
             }
             elseif (!$node->hasAttribute('value') && !$node->hasAttribute(':value')) {
-                $node->setAttribute(':value', "old('$params', data_get(\$_model, '$params'))");
+                if ($node->getAttribute('type') == 'multilang') {
+                $name = $node->getAttribute('name');
+                // trim last, replace it with 'languages'
+                $temp = preg_split('/[\[\]]/', $name, -1, PREG_SPLIT_NO_EMPTY);
+                $temp[count($temp) -1] = 'languages';
+                $name = implode('.', $temp);
+                $node->setAttribute(':value', "old('$name', data_get(\$_model, '$name'))");
+                } else {
+                    $node->setAttribute(':value', "old('$params', data_get(\$_model, '$params'))");
+                }               
             }
             
             if (!$node->hasAttribute('error') && !$node->hasAttribute(':error')) {

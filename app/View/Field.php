@@ -59,6 +59,9 @@ class Field
         $field = $this->make($type);
         
         if (! $field) {
+            if ($type) {
+                throw new \Exception("Field $type not found");
+            }
             return;
         }  
         

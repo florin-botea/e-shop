@@ -27,3 +27,19 @@ $(document).ready(() =>
         return Promise.resolve(res);
     });
 });
+
+$(document).on('click', 'a[modal]', function(e) {
+    e.preventDefault();//todo buggy
+    $('#modal .modal-body').load(e.target.href);
+    $('#modal').modal('show');
+});
+
+    $(document).on('change', '.field-select select', function() {
+        let params = {
+            field: $(this).val(),
+            name: $(this).attr('prefix'),
+        };
+        http.get("/admin/field-config", {params}).then(res => {
+            $(this).closest('.field-select-wrapper').find('.field-config').html(res.data);
+        });
+    });

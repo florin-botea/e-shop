@@ -4,18 +4,19 @@ namespace App\Models\Catalog;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use LumenCart\Model;
-use LumenCart\Traits\HasLanguages;
 
-class AttributeGroup extends Model
+class AttributeGroupLanguage extends Model
 {
-    use HasFactory, HasLanguages;
+    use HasFactory;
     
     protected $fillable = [
-        'code',
-        'sort_order',
+        'attribute_group_id',
+        'language_id',
+        'name',
     ];
     
     protected $validationRules = [
-        'code' => 'required'
+        'language_id' => 'required',
+        'name' => 'required|min:3',
     ];
 }

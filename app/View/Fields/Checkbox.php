@@ -4,7 +4,7 @@ namespace App\View\Fields;
 
 use App\View\FieldInterface;
 
-class Numeric implements FieldInterface
+class Checkbox implements FieldInterface
 {
     public function configForm($data) 
     {
@@ -13,15 +13,11 @@ class Numeric implements FieldInterface
     
     public function input($data) 
     {
-        $data['type'] = 'number';
-        
-        return view('components/form/input', $data);
+        return view('components/form/form-check', $data);
     }
     
     public function field($data) 
     {
-        $data['type'] = 'number';
-
-        return view('components/form/form-group', $data);
+        return view('components/form/form-check', $data);
     }    
 }

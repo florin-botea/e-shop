@@ -11,10 +11,10 @@ class FormSession
     private $model;
     private $collection;
   
-    public static function pull($form_id)
+    public static function pull($form_id, $array = false)
     {
-        $relationships = session()->pull($form_id, []);
-        
+        $relationships = (array)session()->pull($form_id, []);
+ 
         foreach ($relationships as $key => $collection) {
             foreach ($collection as $item) {
                 if (strpos($item->id, '0-') === 0) {
@@ -22,6 +22,10 @@ class FormSession
                     $item->incrementing = true;
                 }
             }
+        }
+        
+        if ($array) {
+            return json_decode(json_encode($relationships), true);
         }
         
         return $relationships;

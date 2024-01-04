@@ -20,7 +20,7 @@ class FieldConfigController extends Controller
             abort(404);
         }
 
-        $form = $field->setupForm($this->request->all());
+        $form = $field->configForm($this->request->all());
         $form .= app('fields')->validationForm();
         
         return $form;

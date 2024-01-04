@@ -20,7 +20,7 @@ class AttributeGroupController extends Controller
     public function index() 
     {
         $data['collection'] = $this->model_catalog_attribute_group
-        ->withDescription()
+        ->with('language')
         ->paginate();
 
         return view('catalog/attribute_group/index', $data);
@@ -41,14 +41,10 @@ class AttributeGroupController extends Controller
         $this->model_catalog_attribute_group->validator($this->request->all())
         ->validate();
         
-        $record = $this->model_catalog_attribute_group->create($this->request->all());
         $relationships = FormSession::pull($this->request->_form_id);
-        foreach ($relationships as $key => $collection) {
-            foreach ($collection as $item) {
-                $item->attribute_group_id = $record->id;
-                $item->save();
-            }
-        }
+        $relationships = json_decode(json_encode($relationships), true);
+        $create = array_merge($this->request->all(), $relationships);
+        $record = $this->model_catalog_attribute_group->createWithRelationships($create);
         
         return redirect(route('admin/catalog/attribute_group'));
     }
@@ -65,14 +61,9 @@ class AttributeGroupController extends Controller
 
         $record = $this->model_catalog_attribute_group->findOrFail($attribute_group_id);
         $relationships = FormSession::pull($this->request->_form_id);
-        foreach ($relationships as $relationship => $collection) {
-            $record->{$relationship}()->whereNotIn('id', $collection->pluck('id')->toArray())
-            ->delete();
-            foreach ($collection as $item) {
-                $item->attribute_group_id = $record->id;
-                $item->save();
-            }
-        }
+        $relationships = json_decode(json_encode($relationships), true);
+        $update = array_merge($this->request->all(), $relationships);
+        $record = $record->updateWithRelationships($update);
         
         return redirect(route('admin/catalog/attribute_group'));
     }

@@ -20,7 +20,7 @@ class AttributeController extends Controller
     public function index() 
     {
         $data['collection'] = $this->model_catalog_attribute
-        ->with('description')
+        ->with('language')
         ->paginate();
 
         return view('catalog/attribute/index', $data);
@@ -56,12 +56,12 @@ class AttributeController extends Controller
     
     public function update($attribute_id) 
     {
+dd($this->request->all());
         $this->model_catalog_attribute->validator($this->request->all(), $attribute_id)
         ->validate();
-
         $relationships = FormSession::pull($this->request->_form_id);
         $relationships = json_decode(json_encode($relationships), true);
-        $update = array_merge($this->request->all(), $relationships);
+        $update = array_merge($this->request->all(), $relationships);//dd($update);
         $record = $this->model_catalog_attribute->findOrFail($attribute_id);
         $record->updateWithRelationships($update);
         
@@ -111,7 +111,6 @@ class AttributeController extends Controller
             'unit_field_config',
         );
         
-         view('catalog/attribute/form', $data);
         return view('catalog/attribute/form', $data);
     }
 }

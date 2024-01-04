@@ -71,7 +71,7 @@ class Handler extends ExceptionHandler
             
             return response($data);
         }
-    
+        
         return parent::render($request, $exception);
     }
 }

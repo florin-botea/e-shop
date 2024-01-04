@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attribute_values', function (Blueprint $table) {
+        Schema::create('attribute_value_languages', function (Blueprint $table) {
             $table->id();
-            $table->integer('attribute_id');
-            $table->string('value', 255);
-            $table->string('unit', 255)->nullable();
+            $table->integer('attribute_value_id');
+            $table->integer('language_id');            
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attribute_values');
+        Schema::dropIfExists('attribute_value_languages');
     }
 };
