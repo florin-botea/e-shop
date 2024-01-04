@@ -10,9 +10,9 @@ class Form extends Model
         'code',
         'name',
     ];
-    
+
     public function fields()
     {
-        return $this->hasMany(FormField::class);
+        return $this->hasMany(FormField::class)->orderBy('sort_order');
     }
 }

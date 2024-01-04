@@ -432,7 +432,7 @@ input[type="radio"]:active, .radio input[type="radio"]:active, .radio-inline inp
 }
 
 input[type="radio"]:checked, .radio input[type="radio"]:checked, .radio-inline input[type="radio"]:checked, input[type="checkbox"]:checked, .checkbox input[type="checkbox"]:checked, .checkbox-inline input[type="checkbox"]:checked {
-    background: #fff;
+    /* background: #fff; */
 }
 
 input[type="radio"], .radio input[type="radio"], .radio-inline input[type="radio"] {
@@ -961,13 +961,13 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
     content: "\e91c";
 }
 
-html[dir="rtl"] .form-group ul.dropdown-menu { 
-    text-align: right; 
+html[dir="rtl"] .form-group ul.dropdown-menu {
+    text-align: right;
     left: 0px !important;
     right: 31px !important;
 }
 
-html[dir="rtl"] #filter-product { 
+html[dir="rtl"] #filter-product {
     overflow: hidden;
 }
 
@@ -991,7 +991,7 @@ html[dir="rtl"] .text-right {
     html[dir="rtl"] .col-md-push-9 {
         left: 0% !important;
     }
-    
+
     html[dir="rtl"] .col-md-pull-3 {
         right: 0% !important;
     }

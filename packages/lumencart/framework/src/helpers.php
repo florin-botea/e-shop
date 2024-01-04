@@ -51,12 +51,12 @@ if (! function_exists('old')) {
         return session()->getOldInput($key, $fallback);
     }
 }
-    
-    
+
+
 if (! function_exists('get_dir_contents')) {
     function get_dir_contents($dir, &$results = array()) {
         $files = scandir($dir);
-    
+
         foreach ($files as $key => $value) {
             $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
             if (!is_dir($path)) {
@@ -66,24 +66,26 @@ if (! function_exists('get_dir_contents')) {
                 $results[] = $path;
             }
         }
-    
+
         return $results;
     }
 }
 
 if (! function_exists('get_dir_classes')) {
     function get_dir_classes($dir, $namespace) {
+        $dir = str_replace("\\", '/', $dir);
         $namespace = trim($namespace, '\\');
         $classes = [];
         foreach (get_dir_contents($dir) as $path) {
             if (is_file($path) && strpos($path, '.php')) {
+                $path = str_replace("\\", "/", $path);
                 $class = str_replace([$dir, '/', '.php'], ['', '\\', ''], $path);
                 $name = array_map(fn($str) => Illuminate\Support\Str::snake($str), explode('\\', $class));
                 $name = implode('/', $name);
                 $classes[] = "$namespace\\" . trim($class, '\\');
             }
         }
-        
+
         return $classes;
     }
 }
@@ -93,13 +95,12 @@ if (! function_exists('model_name')) {
         if (!is_string($class)) {
             $class = get_class($class);
         }
-        
+
         $name = str_replace('App\\Models\\', '', $class);
         $parts = explode('\\', $name);
         $parts = array_map(fn($part) => Illuminate\Support\Str::snake($part), $parts);
         $name = implode('/', $parts);
-        
+
         return $name;
     }
 }
-    

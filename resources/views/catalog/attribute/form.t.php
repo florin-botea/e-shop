@@ -10,24 +10,11 @@
           <x-tabs id="attribute-form-tabs">
             <tpl slot="tabs">
                 <x-tab-item value="general" active>{t 'General'}</x-tab-item>
-                <x-tab-item value="description">{t 'Description'}</x-tab-item>
                 <x-tab-item value="values">{t 'Values'}</x-tab-item>
             </tpl>
 
             <div slot="general">
                 {!! form('attribute_form', $_model) !!}
-                <!-- fieldset>
-                  <legend>{t 'Data'}</legend>
-                  <x-form-group p-model="code" />            
-                  <x-form-check p-model="config.value.required" />
-                  <x-form-check p-model="config.value.multilang" />
-                  <x-form-group p-model="unit_field" type="select" :options="$field_type_options" id="unit_field" blank="{t 'none'}" />
-                  <div id="unit-field-config">{!! $unit_field_config !!}</div>
-                  <x-form-group p-model="sort_order" type="number" />
-                </fieldset -->                
-            </div>  
-            <div slot="description">
-                <tpl is="catalog/attribute_language/index" :attribute_id="$form_id"></tpl>
             </div>
             <div slot="values">
                 <div p-if="! $_model->id" class="alert alert-warning">

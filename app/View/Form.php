@@ -5,14 +5,14 @@ namespace App\View;
 class Form implements \Stringable
 {
     protected $code;
-    protected $data;
-    
-    public function __construct($code, $data = [])
+    protected $model;
+
+    public function __construct($code, $model = [])
     {
         $this->code = $code;
-        $this->data = $data;
+        $this->model = $model;
     }
-    
+
     public function __toString()
     {
         $form = model('setting/form')
@@ -21,17 +21,36 @@ class Form implements \Stringable
         ->first();
 
         if (!$form) return '';
-        
+
         $fields = [];
         foreach ($form->fields as $field) {
             $class = $field->field;
-            $language = $field->language;
-            unset($field->language);
-            $data = array_merge($field->toArray(), $language->toArray());
-            //dump($data); todo: unsets
+            $data = $this->fieldData($field, $class);
             $fields[] = (new $class())->field($data);
         }
 
         return implode("\n", $fields);
+    }
+
+    private function fieldData($field, $class)
+    {
+        $data = [
+            'name' => $field->name,
+            'label' => $field->language->label,
+            'helper' => $field->language->helper,
+            'mention' => $field->language->mention,
+            'placeholder' => $field->language->placeholder,
+        ];
+
+        if (method_exists($class, 'getValue')) {
+            $data['value'] = $class::getValue($this->model);
+
+        } else {
+            $data['value'] = data_get($this->model, $field->name);
+        }
+
+        $data = array_merge($data, (array)$field->config);
+
+        return $data;
     }
 }
