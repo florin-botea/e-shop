@@ -32,6 +32,29 @@ class Form implements \Stringable
         return implode("\n", $fields);
     }
 
+    public function validate($data)
+    {
+        $form = model('setting/form')
+        ->with('fields.language')
+        ->where('code', $this->code)
+        ->first();
+
+        if (!$form) return;
+
+        $errors = [];
+        foreach ($form->fields as $field) {
+            $class = $field->field;
+            $_errors = (new $class())->validate($data);
+
+            if ($_errors) {
+                $errors[$field->name] = $_errors;
+            }
+        }
+
+        // TODO: throw
+        return $errors;
+    }
+
     private function fieldData($field, $class)
     {
         $data = [

@@ -38,13 +38,11 @@ class AttributeController extends Controller
 
     public function store()
     {
-        $this->model_catalog_attribute->validator($this->request->all())
-        ->validate();
+        $create = $this->request->all();
 
-        $relationships = FormSession::pull($this->request->_form_id);
-        $relationships = json_decode(json_encode($relationships), true);
-        $create = array_merge($this->request->all(), $relationships);
-        $record = $this->model_catalog_attribute->createWithRelationships($create);
+        form('attribute_form', $create)->validate();
+
+        $attribute = model('catalog/attribute')->createWithRelationships($create);
 
         return redirect(route('admin/catalog/attribute'));
     }
@@ -58,6 +56,7 @@ class AttributeController extends Controller
     {
         // TODO:
         $update = $this->request->all();
+
         // form('attribute_form', $update)->validate(); // TODO: standard 22:00 4.01.2024
 
         $attribute = model('catalog/attribute')->findOrFail($attribute_id);
