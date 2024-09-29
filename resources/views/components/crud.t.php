@@ -1,12 +1,16 @@
 {% $id = 'crud_' . uniqid() %}
 <div :id="$id">
     <div class="text-end">
-        <x-btn-add type="button" class="lm-crud-create"></x-btn-add>
+        <x-btn-add type="button" lm-crud-create></x-btn-add>
     </div>
     
-    <table class="table lm-table-loading"></table>
+    <table class="table" lm-table-loading>
+        <tr>
+            <td><div class="bg-fetch"><span class="btn invisible">x</span></div></td>
+        </tr>
+    </table>
         
-    <div class="table-wrapper">
+    <div lm-crud-content>
         <table class="table">
           <thead>
             <tr>
@@ -15,20 +19,20 @@
             </tr>
           </thead>
           <tbody p-if="isset($collection)">
-            <tr p-foreach="$collection as $item" :data-item-id="$item['id']">
+            <tr p-foreach="$collection as $item" :lm-crud-item="$item['id']">
                 <slot :item="$item"></slot>
                 <td class="text-end">
-                    <x-btn-edit type="button" class="lm-crud-edit"></x-btn-edit>
-                    <x-btn-delete type="button" class="lm-crud-delete"></x-btn-delete>
+                    <x-btn-edit type="button" lm-crud-edit></x-btn-edit>
+                    <x-btn-delete type="button" lm-crud-delete></x-btn-delete>
                 </td>
             </tr>
           </tbody>
         </table>
     </div>
     
-    <x-modal class="lm-crud-modal">
+    <x-modal lm-crud-modal>
         <tpl slot="footer">
-            <x-btn-save class="lm-crud-submit"></x-btn-save>
+            <x-btn-save lm-crud-submit></x-btn-save>
         </tpl>
     </x-modal>
 </div>
