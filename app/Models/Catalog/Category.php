@@ -3,9 +3,14 @@
 namespace App\Models\Catalog;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use LumenCart\Model;
+use LumenCart\Traits\HasLanguages;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, HasLanguages;
+    
+    protected $fillable = [
+        'code'
+    ];
 }

@@ -4,9 +4,12 @@ namespace App\Models\Catalog;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use LumenCart\Traits\IsLanguage;
 
 class ManufacturerDescription extends Model
 {
+    use IsLanguage;
+    
     protected $fillable = [
         'manufacturer_id',
         'store_id',

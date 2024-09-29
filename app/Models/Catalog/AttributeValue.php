@@ -21,4 +21,9 @@ class AttributeValue extends Model
     protected $validationRules = [
         'value' => 'required',
     ];
+    
+    public function attribute()
+    {
+        return $this->belongsTo(model('catalog/attribute')->class);
+    }
 }

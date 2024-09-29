@@ -14,13 +14,12 @@ class Attribute extends Model
     
     protected $fillable = [
         'code',
-        'unit_field',
-        'config',
+        'field',
         'sort_order',
     ];
     
     protected $casts = [
-        'config' => 'array',
+        'field' => 'array',
     ];
 
     public function validator($data = [], $id = 0)
@@ -30,12 +29,20 @@ class Attribute extends Model
         ]);
     }
     
-    public function config($key = null, $default = null)
+    public function getFieldAttribute($field)
     {
-        if (is_null($key)) {
-            return (array)$this->config;
+        if (is_string($field)) {
+            $field = json_decode($field, true);
         }
         
-        return Arr::get($this->config, $key, $default);
+        if (empty($field['type'])) {
+            $field['type'] = 'App\View\Fields\Text';
+        }
+        
+        if (empty($field['settings'])) {
+            $field['settings'] = [];
+        }
+        
+        return $field;
     }
 }

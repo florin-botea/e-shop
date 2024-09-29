@@ -13,11 +13,27 @@ class FormField extends Model
         'form_id',
         'name',
         'field',
-        'config',
         'sort_order',     
     ];
     
     protected $casts = [
-        'config' => 'array',
+        'field' => 'array',
     ];
+    
+    public function getFieldAttribute($field)
+    {
+        if (is_string($field)) {
+            $field = json_decode($field, true);
+        }
+        
+        if (empty($field['type'])) {
+            $field['type'] = 'App\View\Fields\Text';
+        }
+        
+        if (empty($field['settings'])) {
+            $field['settings'] = [];
+        }
+        
+        return $field;
+    }
 }
