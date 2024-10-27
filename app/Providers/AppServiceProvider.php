@@ -45,6 +45,13 @@ class AppServiceProvider extends ServiceProvider
             return new \App\View\Field;
         });
         
+        
+        $this->app->singleton('htme', function() {
+            return new \App\View\Htme;
+        });
+        
+        
+        
         $this->commands([
             \App\Console\Commands\Remigrate::class
         ]);

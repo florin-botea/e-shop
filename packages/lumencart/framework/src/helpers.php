@@ -2,16 +2,15 @@
 
 if (! function_exists('redirect')) {
     /**
-     * Get an instance of the redirector.
-     *
-     * @param  string|null  $to
-     * @param  int  $status
-     * @param  array  $headers
-     * @param  bool|null  $secure
-     * @return \Laravel\Lumen\Http\Redirector|\Illuminate\Http\RedirectResponse
-     */
-    function redirect($to = null, $status = 302, $headers = [], $secure = null)
-    {
+    * Get an instance of the redirector.
+    *
+    * @param  string|null  $to
+    * @param  int  $status
+    * @param  array  $headers
+    * @param  bool|null  $secure
+    * @return \Laravel\Lumen\Http\Redirector|\Illuminate\Http\RedirectResponse
+    */
+    function redirect($to = null, $status = 302, $headers = [], $secure = null) {
         $redirector = new LumenCart\Http\Redirector(app());
 
         if (is_null($to)) {
@@ -102,5 +101,12 @@ if (! function_exists('model_name')) {
         $name = implode('/', $parts);
 
         return $name;
+    }
+}
+
+if (! function_exists('block')) {
+    function block($name, $model = null) {
+        $layout = new App\View\BlockLayout($name, $model);
+        return $layout;
     }
 }

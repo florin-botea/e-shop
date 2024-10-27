@@ -44,7 +44,6 @@ window.http.defaults.headers.common['X-CSRF-TOKEN'] = '{{ \csrf_token() }}';
     <tpl is="partials/column-left"></tpl>
     <slot></slot>
 </div>
-<x-modal id="modal" />
 <slot name="scripts"></slot>
 </body>
 </html>

@@ -54,6 +54,16 @@ class AttributeController extends Controller
 
     public function update($attribute_id)
     {
+        $attribute = model('catalog/attribute');
+        $attribute = $attribute->find($attribute_id);
+        
+        $attribute = block('attribute.form', $attribute)
+        ->input($this->request)
+        ->validate()
+        ->save();
+        
+        dd($attribute->toArray());
+        
         // TODO:
         $update = $this->request->all();
 
@@ -81,12 +91,15 @@ class AttributeController extends Controller
         // TODO: standard 21:09 4.01.2024
         $attribute = model('catalog/attribute');
         if ($attribute_id) {
+            $data['attribute_form_url'] = route('admin/catalog/attribute/update', [
+                'attribute_id' => $attribute_id, 
+                '_method' => 'PUT'
+            ]);
             $attribute = $attribute->findOrFail($attribute_id);
         }
+        
+        $data['attribute'] = $attribute;
 
-        $view['_model'] = $attribute;
-        $view['form'] = form('attribute_form', $attribute);
-
-        return view('catalog/attribute/form', $view);
+        return view('catalog.attribute.form', $data); 
     }
 }
