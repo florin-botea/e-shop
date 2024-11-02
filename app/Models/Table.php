@@ -56,7 +56,7 @@ class Table extends Model
             $changes['default'] = true;
             $changes['index'] = true;
 
-            if ($column['id'] && $alter_table && $existing_columns[$column['id']]) {
+            if ($column['id'] && $alter_table && isset($existing_columns[$column['id']])) {
                 $old = $existing_columns[$column['id']];
 
                 $changes['name'] = $old->name != $column['name'];
