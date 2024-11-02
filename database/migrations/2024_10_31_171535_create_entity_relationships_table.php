@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('form_tabs', function (Blueprint $table) {
+        Schema::create('entity_relationships', function (Blueprint $table) {
             $table->id();
-            $table->integer('form_id');
-            $table->string('code');
-            $table->integer('sort_order')->default(0);
+            $table->string('type', 30)->index();
+            $table->integer('entity_id')->index();
+            $table->text('args');
+            $table->integer('pivot_entity_id')->index()->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('form_tabs');
+        Schema::dropIfExists('entity_relationships');
     }
 };

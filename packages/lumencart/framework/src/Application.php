@@ -153,7 +153,14 @@ class Application extends BaseApplication
         return $concrete;
     }
 
-    public function model($name) {
-        return new AbstractModel($name);
+    public function model($code) {
+        $entity = Entity::with('table.columns', 'relationships')
+        ->where('code', $code)
+        ->first();
+        
+        $fillable = $entity->table->columns->pluck('code')->toArray();
+        
+        $model = new AbstractModel();
+        $model->addFillable($fillable);
     }
 }

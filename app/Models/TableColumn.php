@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Entity extends Model
+class TableColumn extends Model
 {
     protected $fillable = [
-        'code',
+        'table_id',
+        'type',
         'name',
         'description',
-        'table_id',
+        'default',
+        'length',
+        'index',
     ];
 }

@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('entities', function (Blueprint $table) {
+        Schema::create('table_columns', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 50)->index();
-            $table->string('name', 50);
-            $table->string('description', 255);
             $table->integer('table_id')->index();
+            $table->string('type', 20)->index();
+            $table->string('name', 50)->index();
+            $table->string('description', 255);
+            $table->string('default');
+            $table->integer('length')->default(11);
+            $table->tinyInteger('index')->default(0)->index();
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('entities');
+        Schema::dropIfExists('table_columns');
     }
 };

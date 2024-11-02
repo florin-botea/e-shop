@@ -13,13 +13,9 @@ return new class extends Migration
     {
         Schema::create('entity_properties', function (Blueprint $table) {
             $table->id();
-            $table->integer('entity_id');
-            $table->string('name');
-            $table->string('code');
-            $table->string('type');
-            $table->string('default');
-            $table->integer('length')->default(11);
-            $table->boolean('index')->default(0);
+            $table->integer('entity_id')->index();
+            $table->string('table_column_id')->index();
+            $table->string('code')->index();
         });
     }
 

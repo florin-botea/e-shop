@@ -10,11 +10,7 @@ class EntityProperty extends Model
 
     protected $fillable = [
         'entity_id',
-        'name',
+        'table_column_id',
         'code',
-        'type',
-        'default',
-        'length',
-        'index',
     ];
 }

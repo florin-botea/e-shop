@@ -34,8 +34,8 @@ if (! function_exists('session')) {
 }
 
 if (! function_exists('model')) {
-    function model($model, $extends = null) {
-        return app()->model($model, $extends);
+    function model($model) {
+        return app()->model($model);
     }
 }
 
