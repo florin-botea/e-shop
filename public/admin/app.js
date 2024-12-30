@@ -6,10 +6,21 @@ app.notify = {
     }
 };
 
-$(document).ready(() => 
+async function view(template, data) {
+  const http = window.http;
+  
+  let res = await http.post(window.app.base_url + '/template_builder', {
+    template: template,
+    data: data,
+  });
+  
+  return res.data;
+}
+
+$(document).ready(async () => 
 {
     const http = window.http;
-    
+
     http.interceptors.response.use((res) => 
     {
         if (res.data._confirmation_required) 
